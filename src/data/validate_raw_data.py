@@ -1,9 +1,7 @@
-from pathlib import Path
-
 import great_expectations as gx
 import pandas as pd
 
-RAW_DATA_PATH = Path("data/raw/yellow_tripdata_2025-01.parquet")
+from configs.training_config import RAW_DATA_PATH
 
 
 def get_raw_data_batch(df: pd.DataFrame):
