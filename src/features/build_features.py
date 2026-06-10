@@ -2,8 +2,7 @@ from pathlib import Path
 
 import pandas as pd
 
-RAW_DATA_PATH = Path("data/raw/yellow_tripdata_2025-01.parquet")
-PROCESSED_DATA_PATH = Path("data/processed/hourly_demand_2025-01.parquet")
+from configs.training_config import RAW_DATA_PATH, PROCESSED_DATA_PATH
 
 
 def load_raw_data(path: Path) -> pd.DataFrame:
