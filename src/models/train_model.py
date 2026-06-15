@@ -5,6 +5,7 @@ import mlflow.sklearn
 import pandas as pd
 from sklearn.linear_model import LinearRegression
 from sklearn.tree import DecisionTreeRegressor
+from sklearn.ensemble import RandomForestRegressor
 
 from configs.training_config import (
     FEATURE_COLUMNS,
@@ -105,6 +106,20 @@ def train_model(data_path: Path) -> None:
         model=DecisionTreeRegressor(random_state=42),
         model_type="DecisionTreeRegressor",
         run_name="decision_tree_baseline",
+        X_train=X_train,
+        X_test=X_test,
+        y_train=y_train,
+        y_test=y_test,
+    )
+
+    run_experiment(
+        model=RandomForestRegressor(
+            n_estimators=100,
+            random_state=42,
+            n_jobs=-1,
+        ),
+        model_type="RandomForestRegressor",
+        run_name="random_forest_baseline",
         X_train=X_train,
         X_test=X_test,
         y_train=y_train,
