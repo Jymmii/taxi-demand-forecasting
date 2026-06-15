@@ -55,8 +55,11 @@ def run_experiment(
     with mlflow.start_run(run_name=run_name):
         model.fit(X_train, y_train)
 
-        predictions = model.predict(X_test)
-        mae = calculate_mae(y_test, predictions)
+        train_predictions = model.predict(X_train)
+        test_predictions = model.predict(X_test)
+
+        train_mae = calculate_mae(y_train, train_predictions)
+        test_mae = calculate_mae(y_test, test_predictions)
 
         mlflow.log_param("model_type", model_type)
         mlflow.log_param("feature_columns", ",".join(FEATURE_COLUMNS))
@@ -65,10 +68,11 @@ def run_experiment(
         mlflow.log_param("test_rows", len(X_test))
         mlflow.log_param("split_type", "time_based")
 
-        mlflow.log_metric("mae", float(mae))
-        mlflow.log_metric("prediction_min", float(predictions.min()))
-        mlflow.log_metric("prediction_max", float(predictions.max()))
-        mlflow.log_metric("prediction_mean", float(predictions.mean()))
+        mlflow.log_metric("train_mae", float(train_mae))
+        mlflow.log_metric("test_mae", float(test_mae))
+        mlflow.log_metric("prediction_min", float(test_predictions.min()))
+        mlflow.log_metric("prediction_max", float(test_predictions.max()))
+        mlflow.log_metric("prediction_mean", float(test_predictions.mean()))
 
         mlflow.sklearn.log_model(
             sk_model=model,
@@ -76,7 +80,7 @@ def run_experiment(
             input_example=X_train.head(5),
         )
 
-        print(f"{model_type} completed. MAE: {mae:.2f}")
+        print(f"{model_type} completed. Train MAE: {train_mae}, Test MAE: {test_mae}")
 
 
 def train_model(data_path: Path) -> None:
