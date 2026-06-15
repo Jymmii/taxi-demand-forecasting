@@ -3,9 +3,6 @@ from pathlib import Path
 import mlflow
 import mlflow.sklearn
 import pandas as pd
-from sklearn.linear_model import LinearRegression
-from sklearn.tree import DecisionTreeRegressor
-from sklearn.ensemble import RandomForestRegressor
 
 from configs.training_config import (
     FEATURE_COLUMNS,
@@ -16,6 +13,7 @@ from configs.training_config import (
     EXPERIMENT_NAME,
 )
 from src.evaluation.metrics import calculate_mae
+from src.models.model_factory import create_models
 
 
 def load_processed_data(path: Path) -> pd.DataFrame:
@@ -92,39 +90,18 @@ def train_model(data_path: Path) -> None:
 
     mlflow.set_experiment(EXPERIMENT_NAME)
 
-    run_experiment(
-        model=LinearRegression(),
-        model_type="LinearRegression",
-        run_name="linear_regression_baseline",
-        X_train=X_train,
-        X_test=X_test,
-        y_train=y_train,
-        y_test=y_test,
-    )
+    models = create_models()
 
-    run_experiment(
-        model=DecisionTreeRegressor(random_state=42),
-        model_type="DecisionTreeRegressor",
-        run_name="decision_tree_baseline",
-        X_train=X_train,
-        X_test=X_test,
-        y_train=y_train,
-        y_test=y_test,
-    )
-
-    run_experiment(
-        model=RandomForestRegressor(
-            n_estimators=100,
-            random_state=42,
-            n_jobs=-1,
-        ),
-        model_type="RandomForestRegressor",
-        run_name="random_forest_baseline",
-        X_train=X_train,
-        X_test=X_test,
-        y_train=y_train,
-        y_test=y_test,
-    )
+    for run_name, model in models.items():
+        run_experiment(
+            model=model,
+            model_type=type(model).__name__,
+            run_name=run_name,
+            X_train=X_train,
+            X_test=X_test,
+            y_train=y_train,
+            y_test=y_test,
+        )
 
 
 def main() -> None:
