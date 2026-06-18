@@ -1,6 +1,7 @@
 import mlflow
 import mlflow.sklearn
 import pandas as pd
+import joblib
 
 from sklearn.model_selection import GridSearchCV, TimeSeriesSplit
 from sklearn.tree import DecisionTreeRegressor
@@ -8,6 +9,7 @@ from sklearn.tree import DecisionTreeRegressor
 from configs.training_config import (
     EXPERIMENT_NAME,
     PROCESSED_DATA_PATH,
+    CHAMPION_MODEL_PATH,
 )
 from src.evaluation.metrics import calculate_mae
 from src.models.train_model import split_data_by_time
@@ -79,6 +81,13 @@ def tune_decision_tree() -> None:
             artifact_path="model",
             input_example=X_train.head(5),
         )
+
+    CHAMPION_MODEL_PATH.parent.mkdir(
+        parents=True,
+        exist_ok=True,
+    )
+
+    joblib.dump(best_model, CHAMPION_MODEL_PATH)
 
     print("Tuned Decision Tree completed.")
     print(f"Best params: {grid_search.best_params_}")

@@ -4,6 +4,8 @@ RAW_DATA_PATH = Path("data/raw/yellow_tripdata_2025-01.parquet")
 
 PROCESSED_DATA_PATH = Path("data/processed/hourly_demand_2025-01.parquet")
 
+CHAMPION_MODEL_PATH = Path("artifacts/champion_model.pkl")
+
 FEATURE_COLUMNS = [
     "PULocationID",
     "hour",
