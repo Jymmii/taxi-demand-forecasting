@@ -7,14 +7,10 @@ from sklearn.tree import DecisionTreeRegressor
 
 from configs.training_config import (
     EXPERIMENT_NAME,
-    FEATURE_COLUMNS,
     PROCESSED_DATA_PATH,
-    TARGET_COLUMN,
-    TEST_SIZE,
-    TIMESTAMP_COLUMN,
 )
 from src.evaluation.metrics import calculate_mae
-from src.models.train_model import load_processed_data, split_data_by_time
+from src.models.train_model import split_data_by_time
 
 
 def tune_model(model, param_grid, X_train, y_train):
