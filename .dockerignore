@@ -1,0 +1,16 @@
+.venv
+.git
+__pychace__
+*.pyc
+.pytest_cache
+.ruff_cache
+
+data/
+notebooks/
+mlruns/
+great_expectations/
+docs/
+scripts/
+tests/
+
+.env
