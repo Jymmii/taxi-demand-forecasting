@@ -28,3 +28,16 @@ jobs:
 
       - name: Build Docker image
         run: docker build -t taxi-demand-api .
+
+      - name: Start Docker container
+        run: docker run -d --name taxi-demand-api-test -p 8000:8000 taxi-demand-api
+
+      - name: Test health endpoint
+        run: |
+          for i in {1..10}; do
+            if curl --fail http://localhost:8000/; then
+              exit 0
+            fi
+            sleep 1
+          done
+          exit 1
