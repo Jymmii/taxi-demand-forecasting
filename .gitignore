@@ -13,7 +13,8 @@ venv/
 data/raw/
 data/processed/
 
-artifacts/
+artifacts/*
+!artifacts/champion_model.pkl
 mlruns/
 
 .ipynb_checkpoints/
